@@ -1,0 +1,206 @@
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Value changed function: ExitSwitch
+        function ExitSwitchValueChanged(app, event)
+            % Initialise arduino
+            a = arduino('COM3', 'Uno');
+            % Create a Servo objec
+            s = servo(a, 'D4');
+            
+            % if 0=<available parking spot> 14, then EXIT operation will be performed 
+            if app.AvailableSpotsEditField.Value >= 0  && app.AvailableSpotsEditField.Value < 14
+                
+                app.Lamp.Color='w';                  % app red light turn OFF
+                app.Lamp_3.Color ='g';               % app green light turn ON
+                writeDigitalPin(a, 'D11', 1);        % hardware green LED turn ON
+                
+                for angle = 0                        % Servo motor operation, gate open and close
+                    writePosition(s, angle);
+                    pause(2);
+                    angle=0.5;
+                    writePosition(s, angle);
+                end
+                writeDigitalPin(a, 'D11', 0);         % hardware green LED turn OFF
+                app.Lamp_2.Color ='y';                % app yellow light turn ON
+                app.Lamp_3.Color ='w';                % app green light turn OFF
+                pause(2);
+                writeDigitalPin(a, 'D12', 1);         % hardware Red LED turn ON
+                
+                app.Lamp_2.Color ='w';                % app yellow light turn OFF
+                app.Lamp_3.Color ='w';                % app green light turn OFF
+                app.Lamp.Color='r';                   % app red light turn ON 
+                A= app.AvailableSpotsEditField.Value;
+                B= 1;
+                % Available spot value will be increased by 1
+                app.AvailableSpotsEditField.Value = A+B;  
+                
+                %update images
+                switch app.AvailableSpotsEditField.Value
+                     case 0
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p14.jpg';
+                     case 13
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p1final.jpg';
+                     case 12
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p2.jpg';
+                     case 11
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p3.jpg';
+                     case 10
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p4.jpg';
+                     case 9
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p5.jpg';
+                     case 8
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p6.jpg';
+                     case 7
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p7.jpg';
+                     case 6
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p8.jpg';
+                     case 5
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p9.jpg';
+                     case 4
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p10.jpg';
+                     case 3
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p11.jpg';
+                     case 2
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p12.jpg';
+                     case 1
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p13.jpg';
+                end
+                
+                
+            end 
+        end
+
+        % Value changed function: EnterSwitch
+        function EnterSwitchValueChanged(app, event)
+            % Initialise arduino
+            a = arduino('COM3', 'Uno');
+            % Create a Servo objec
+            s = servo(a, 'D4');
+            
+            % if 0<available parking spot>= 14, then ENTRY operation will be performed 
+            if app.AvailableSpotsEditField.Value <= 14  && app.AvailableSpotsEditField.Value > 0 
+                
+                app.Lamp.Color='w';                  % app red light turn OFF
+                app.Lamp_3.Color ='g';               % app green light turn ON
+                writeDigitalPin(a, 'D11', 1);        % hardware green LED turn ON
+                for angle = 0                        % gate open and close
+                    writePosition(s, angle);
+                    pause(2);
+                    angle=0.5;
+                    writePosition(s, angle);
+                end
+                writeDigitalPin(a, 'D11', 0);         % hardware green LED turn OFF
+                app.Lamp_2.Color ='y';                % app yellow light turn ON
+                app.Lamp_3.Color ='w';                % app green light turn OFF
+                pause(2);
+                writeDigitalPin(a, 'D12', 1);         % hardware Red LED turn ON
+                
+                app.Lamp_2.Color ='w';                % app yellow light turn OFF
+                app.Lamp_3.Color ='w';                % app green light turn OFF
+                app.Lamp.Color='r';                   % app red light turn ON 
+                A= app.AvailableSpotsEditField.Value;
+                B= 1;
+                % Available spot value will be decreased by 1
+                app.AvailableSpotsEditField.Value = A-B;  
+                
+                else
+                       app.EditField.Value= 'Please come back later!';  
+             end       
+            
+                % update images 
+                switch app.AvailableSpotsEditField.Value
+                     case 0
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p14.jpg';
+                     case 13
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p1final.jpg';
+                     case 12
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p2.jpg';
+                     case 11
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p3.jpg';
+                     case 10
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p4.jpg';
+                     case 9
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p5.jpg';
+                     case 8
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p6.jpg';
+                     case 7
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p7.jpg';
+                     case 6
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p8.jpg';
+                     case 5
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p9.jpg';
+                     case 4
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p10.jpg';
+                     case 3
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p11.jpg';
+                     case 2
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p12.jpg';
+                     case 1
+                           app.Image.ImageSource = 'C:\Users\Prashant Patel\Documents\MATLAB\p13.jpg';
+                end
+
+            
+           
+        end
+
+        
+
+        % Value changing function: Knob
+        function KnobValueChanging(app, event)
+         % Initialise arduino
+            a = arduino('COM3', 'Uno');
+            % Create a Servo objec
+            s = servo(a, 'D4');
+            for angle = 0                        % Servo motor operation, gate open and close
+                    writePosition(s, angle);
+                    pause(4);
+            end
+        end
+    end
+
+
+---------------------------------------------------------------------------------------------------------------
+%Entry Manually
+
+a = arduino('COM3', 'Uno');
+s = servo(a, 'D4');
+
+%when we press push switch for entry same action will be perform
+while 1
+buttonvalue = readDigitalPin(a,'D3');   % 1st push switch connected to D3
+
+if buttonvalue == 0
+     %writeDigitalPin(a, 'D12',0);
+     angle = 0.5;                        
+     writePosition(s, angle);
+     writeDigitalPin(a, 'D11',0);
+else
+    angle=0;
+    writePosition(s, angle);
+    writeDigitalPin(a, 'D11',1);
+end
+end
+
+--------------------------------------------------------------------------------------------------------------
+%Exit manually
+
+a = arduino('COM3', 'Uno');
+s = servo(a, 'D4');
+
+%when we press push switch for exit same action will be perform
+while 1
+buttonvalue = readDigitalPin(a,'D2');     % 2nd push switch connected to D2 
+if buttonvalue == 0
+     angle = 0.5;                        
+     writePosition(s, angle);
+     writeDigitalPin(a, 'D11',0);
+else
+    angle=0;
+    writePosition(s, angle);
+    writeDigitalPin(a, 'D11',1);
+end
+end
+
+   
